@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>جمعية شباب ادوارحمان للتنمية والتعاون</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #0a2540;
+    --secondary: #1a4a7a;
+    --accent: #00c2ff;
+    --accent2: #00e5a0;
+    --accent3: #ff6b35;
+    --gold: #f0b429;
+    --danger: #e53e3e;
+    --success: #38a169;
+    --bg: #060f1e;
+    --card: #0d1f35;
+    --card2: #112236;
+    --border: rgba(0,194,255,0.15);
+    --text: #e8f4fd;
+    --muted: #7aa3c0;
+    --glass: rgba(10,37,64,0.85);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== BACKGROUND ===== */
+  .bg-canvas {
+    position: fixed; inset:0; z-index:0;
+    background: radial-gradient(ellipse at 20% 20%, rgba(0,194,255,0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(0,229,160,0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(10,37,64,1) 0%, #060f1e 100%);
+  }
+  .bg-grid {
+    position: fixed; inset:0; z-index:0;
+    background-image: linear-gradient(rgba(0,194,255,0.03) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(0,194,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  /* ===== PAGES ===== */
+  .page { display:none; position:relative; z-index:1; min-height:100vh; }
+  .page.active { display:block; }
+
+  /* ===== LANDING PAGE ===== */
+  #landing {
+    display:none;
+    flex-direction:column;
+    align-items:center;
+  }
+  #landing.active { display:flex; }
+
+  .hero {
+    width:100%;
+    padding: 60px 20px 40px;
+    text-align:center;
+    position:relative;
+  }
+
+  .org-logo {
+    width: 110px; height:110px;
+    border-radius:50%;
+    border: 3px solid var(--accent);
+    box-shadow: 0 0 30px rgba(0,194,255,0.4), 0 0 60px rgba(0,194,255,0.15);
+    margin: 0 auto 20px;
+    background: var(--primary);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 50px;
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%,100% { box-shadow: 0 0 30px rgba(0,194,255,0.4), 0 0 60px rgba(0,194,255,0.15); }
+    50% { box-shadow: 0 0 50px rgba(0,194,255,0.7), 0 0 100px rgba(0,194,255,0.3); }
+  }
+
+  .org-title {
+    font-family: 'Cairo', sans-serif;
+    font-size: clamp(20px,5vw,32px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 8px;
+    text-shadow: 0 0 20px rgba(0,194,255,0.3);
+  }
+
+  .org-subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .org-badge {
+    display: inline-flex; align-items:center; gap:6px;
+    background: rgba(0,194,255,0.1);
+    border: 1px solid rgba(0,194,255,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 13px;
+    color: var(--accent);
+    margin-top: 8px;
+  }
+
+  /* Info strip */
+  .info-strip {
+    display:flex; gap:20px; justify-content:center; flex-wrap:wrap;
+    padding: 20px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,194,255,0.03);
+    width:100%;
+  }
+
+  .info-item {
+    display:flex; align-items:center; gap:8px;
+    font-size:13px; color: var(--muted);
+  }
+  .info-item span { color: var(--accent); font-size:16px; }
+
+  /* Login cards */
+  .login-section {
+    width:100%; max-width:500px;
+    padding: 30px 20px 40px;
+  }
+
+  .login-title {
+    text-align:center; font-size:18px; font-weight:700;
+    color: var(--muted); margin-bottom:20px; letter-spacing:1px;
+    text-transform: uppercase; font-size:13px;
+  }
+
+  .login-cards {
+    display: grid; grid-template-columns:1fr 1fr;
+    gap:14px; margin-bottom:20px;
+  }
+
+  .login-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius:16px;
+    padding: 22px 16px;
+    text-align:center;
+    cursor:pointer;
+    transition: all 0.3s ease;
+    position:relative; overflow:hidden;
+  }
+
+  .login-card::before {
+    content:''; position:absolute; inset:0;
+    background: linear-gradient(135deg, transparent 60%, rgba(255,255,255,0.03));
+    border-radius:16px;
+  }
+
+  .login-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    box-shadow: 0 8px 30px rgba(0,194,255,0.2);
+  }
+
+  .login-card.admin { border-color: rgba(240,180,41,0.3); }
+  .login-card.admin:hover { border-color: var(--gold); box-shadow: 0 8px 30px rgba(240,180,41,0.2); }
+  .login-card.reader { border-color: rgba(0,229,160,0.3); }
+  .login-card.reader:hover { border-color: var(--accent2); box-shadow: 0 8px 30px rgba(0,229,160,0.2); }
+  .login-card.collector { border-color: rgba(255,107,53,0.3); }
+  .login-card.collector:hover { border-color: var(--accent3); box-shadow: 0 8px 30px rgba(255,107,53,0.2); }
+  .login-card.member { border-color: rgba(0,194,255,0.3); grid-column:1/-1; }
+
+  .card-icon { font-size:36px; margin-bottom:10px; display:block; }
+  .card-label { font-size:15px; font-weight:700; color:#fff; margin-bottom:4px; }
+  .card-desc { font-size:12px; color: var(--muted); }
+
+  /* Payment info */
+  .payment-section {
+    width:100%; max-width:500px;
+    padding: 0 20px 60px;
+  }
+
+  .payment-title {
+    font-size:16px; font-weight:700;
+    color: var(--gold);
+    display:flex; align-items:center; gap:8px;
+    margin-bottom:14px;
+    padding-bottom:10px;
+    border-bottom:1px solid rgba(240,180,41,0.2);
+  }
+
+  .payment-cards { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+
+  .pay-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius:16px;
+    padding: 20px;
+    text-align:center;
+  }
+
+  .pay-card.orange { border-color: rgba(255,107,53,0.3); }
+  .pay-card.bank { border-color: rgba(0,229,160,0.3); }
+
+  .pay-icon { font-size:32px; margin-bottom:8px; }
+  .pay-name { font-size:14px; font-weight:700; margin-bottom:6px; }
+  .pay-num {
+    font-size:13px; color: var(--muted);
+    background: rgba(255,255,255,0.05);
+    border-radius:8px; padding:6px 10px;
+    font-family:monospace; letter-spacing:1px;
+    margin-bottom:6px;
+    word-break:break-all;
+  }
+  .pay-note { font-size:11px; color: var(--muted); }
+
+  /* ===== MODAL / LOGIN FORM ===== */
+  .modal-overlay {
+    display:none; position:fixed; inset:0; z-index:100;
+    background: rgba(0,0,0,0.7); backdrop-filter:blur(8px);
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .modal-overlay.show { display:flex; }
+
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius:20px;
+    padding: 32px 28px;
+    width:100%; max-width:380px;
+    position:relative;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform:translateY(30px); opacity:0; }
+    to { transform:translateY(0); opacity:1; }
+  }
+
+  .modal-close {
+    position:absolute; top:16px; left:16px;
+    background:none; border:none; color:var(--muted);
+    font-size:22px; cursor:pointer; width:32px; height:32px;
+    display:flex; align-items:center; justify-content:center;
+    border-radius:8px; transition:all 0.2s;
+  }
+  .modal-close:hover { background:rgba(255,255,255,0.1); color:#fff; }
+
+  .modal-icon { font-size:44px; text-align:center; margin-bottom:10px; }
+  .modal-title { text-align:center; font-size:20px; font-weight:800; margin-bottom:4px; }
+  .modal-sub { text-align:center; font-size:13px; color:var(--muted); margin-bottom:24px; }
+
+  .form-group { margin-bottom:16px; }
+  .form-label { display:block; font-size:13px; color:var(--muted); margin-bottom:6px; font-weight:600; }
+
+  .form-input {
+    width:100%; padding:12px 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius:10px;
+    color:#fff; font-size:15px;
+    font-family:'Tajawal',sans-serif;
+    transition: border-color 0.2s;
+    outline:none;
+    text-align:center; letter-spacing:4px;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .form-input::placeholder { letter-spacing:0; color:var(--muted); }
+
+  .btn-login {
+    width:100%; padding:14px;
+    border:none; border-radius:12px;
+    font-size:16px; font-weight:700;
+    font-family:'Tajawal',sans-serif;
+    cursor:pointer; transition:all 0.3s;
+    margin-top:8px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), #0090cc);
+    color:#fff;
+    box-shadow: 0 4px 20px rgba(0,194,255,0.3);
+  }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,194,255,0.4); }
+
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold), #d4891a);
+    color:#000;
+    box-shadow: 0 4px 20px rgba(240,180,41,0.3);
+  }
+
+  .btn-green {
+    background: linear-gradient(135deg, var(--accent2), #00a070);
+    color:#000;
+    box-shadow: 0 4px 20px rgba(0,229,160,0.3);
+  }
+
+  .btn-orange {
+    background: linear-gradient(135deg, var(--accent3), #cc4400);
+    color:#fff;
+    box-shadow: 0 4px 20px rgba(255,107,53,0.3);
+  }
+
+  .error-msg {
+    background: rgba(229,62,62,0.15);
+    border:1px solid rgba(229,62,62,0.3);
+    border-radius:8px; padding:10px 14px;
+    font-size:13px; color:#fc8181;
+    margin-top:10px; display:none;
+    text-align:center;
+  }
+
+  /* ===== DASHBOARD SHARED ===== */
+  .dashboard {
+    min-height:100vh;
+    padding-bottom:80px;
+  }
+
+  .dash-header {
+    background: var(--glass);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    padding:16px 20px;
+    display:flex; align-items:center; justify-content:space-between;
+    position:sticky; top:0; z-index:50;
+  }
+
+  .dash-logo { display:flex; align-items:center; gap:12px; }
+  .dash-logo-icon {
+    width:40px; height:40px; border-radius:10px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+    font-size:20px;
+  }
+  .dash-logo-text { font-size:14px; font-weight:700; line-height:1.3; }
+  .dash-logo-sub { font-size:11px; color:var(--muted); }
+
+  .dash-actions { display:flex; gap:8px; align-items:center; }
+
+  .btn-sm {
+    padding:8px 14px; border-radius:8px; border:none;
+    font-size:13px; font-weight:600; cursor:pointer;
+    font-family:'Tajawal',sans-serif;
+    transition:all 0.2s;
+  }
+
+  .btn-outline {
+    background:transparent;
+    border:1px solid var(--border);
+    color:var(--muted);
+  }
+  .btn-outline:hover { border-color:var(--accent); color:var(--accent); }
+
+  .dash-content { padding:20px; }
+
+  /* ===== STAT CARDS ===== */
+  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
+
+  .stat-card {
+    background: var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:18px;
+    position:relative; overflow:hidden;
+  }
+
+  .stat-card.wide { grid-column:1/-1; }
+
+  .stat-card::after {
+    content:''; position:absolute;
+    top:0; right:0; width:60px; height:60px;
+    border-radius:0 16px 0 60px;
+    opacity:0.1;
+  }
+
+  .stat-card.blue::after { background:var(--accent); }
+  .stat-card.green::after { background:var(--accent2); }
+  .stat-card.orange::after { background:var(--accent3); }
+  .stat-card.gold::after { background:var(--gold); }
+  .stat-card.red::after { background:var(--danger); }
+
+  .stat-icon { font-size:22px; margin-bottom:8px; }
+  .stat-value { font-size:28px; font-weight:900; margin-bottom:2px; }
+  .stat-label { font-size:12px; color:var(--muted); }
+  .stat-sub { font-size:11px; color:var(--muted); margin-top:4px; }
+
+  .stat-card.blue .stat-value { color:var(--accent); }
+  .stat-card.green .stat-value { color:var(--accent2); }
+  .stat-card.orange .stat-value { color:var(--accent3); }
+  .stat-card.gold .stat-value { color:var(--gold); }
+  .stat-card.red .stat-value { color:#fc8181; }
+
+  /* Progress bar */
+  .progress-wrap { margin:10px 0 4px; }
+  .progress-bar {
+    height:8px; border-radius:4px;
+    background:rgba(255,255,255,0.1);
+    overflow:hidden;
+  }
+  .progress-fill {
+    height:100%; border-radius:4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 1s ease;
+  }
+  .progress-labels { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin-top:4px; }
+
+  /* ===== SECTION HEADER ===== */
+  .section-header {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:14px;
+  }
+  .section-title {
+    font-size:16px; font-weight:700;
+    display:flex; align-items:center; gap:8px;
+  }
+
+  /* ===== MEMBER LIST ===== */
+  .member-list { display:flex; flex-direction:column; gap:10px; }
+
+  .member-item {
+    background: var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+    display:flex; align-items:center; gap:12px;
+    transition:all 0.2s;
+  }
+  .member-item:hover { border-color:rgba(0,194,255,0.3); }
+
+  .member-avatar {
+    width:42px; height:42px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18px; font-weight:800; flex-shrink:0;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border:1px solid var(--border);
+  }
+
+  .member-info { flex:1; min-width:0; }
+  .member-name { font-size:15px; font-weight:700; margin-bottom:2px; }
+  .member-meta { font-size:12px; color:var(--muted); }
+
+  .status-badge {
+    padding:4px 10px; border-radius:20px; font-size:12px; font-weight:700;
+    white-space:nowrap;
+  }
+  .status-paid { background:rgba(56,161,105,0.2); color:var(--accent2); border:1px solid rgba(56,161,105,0.3); }
+  .status-unpaid { background:rgba(229,62,62,0.2); color:#fc8181; border:1px solid rgba(229,62,62,0.3); }
+
+  /* ===== DOUAR SECTION ===== */
+  .douar-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px; }
+
+  .douar-card {
+    background: var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:16px;
+  }
+
+  .douar-header { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+  .douar-dot { width:10px; height:10px; border-radius:50%; }
+  .douar-name { font-size:14px; font-weight:700; }
+  .douar-stats { font-size:12px; color:var(--muted); margin-bottom:8px; }
+  .douar-pct { font-size:20px; font-weight:900; }
+
+  /* ===== MEMBER PROFILE ===== */
+  .profile-card {
+    background: var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:24px;
+    text-align:center;
+    margin-bottom:20px;
+  }
+
+  .profile-avatar {
+    width:80px; height:80px; border-radius:20px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border:2px solid var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    font-size:36px; font-weight:900;
+    margin:0 auto 14px;
+  }
+
+  .profile-name { font-size:22px; font-weight:900; margin-bottom:4px; }
+  .profile-id { font-size:13px; color:var(--muted); margin-bottom:12px; }
+  .profile-douar {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(0,194,255,0.1); border:1px solid rgba(0,194,255,0.2);
+    border-radius:20px; padding:4px 14px; font-size:13px; color:var(--accent);
+  }
+
+  .bill-card {
+    background: var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px;
+    margin-bottom:14px;
+  }
+
+  .bill-row {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+  }
+  .bill-row:last-child { border-bottom:none; }
+  .bill-key { font-size:14px; color:var(--muted); }
+  .bill-val { font-size:14px; font-weight:700; }
+
+  .amount-big {
+    text-align:center; padding:20px;
+    font-size:42px; font-weight:900;
+    color: var(--accent);
+  }
+  .amount-unit { font-size:18px; color:var(--muted); }
+
+  /* ===== PAYMENT MODAL ===== */
+  .payment-methods { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+
+  .pay-method {
+    background:var(--card2);
+    border:2px solid var(--border);
+    border-radius:14px; padding:16px;
+    text-align:center; cursor:pointer;
+    transition:all 0.2s;
+  }
+  .pay-method:hover { border-color:var(--gold); }
+  .pay-method.selected { border-color:var(--gold); background:rgba(240,180,41,0.1); }
+  .pay-method-icon { font-size:28px; margin-bottom:6px; }
+  .pay-method-name { font-size:13px; font-weight:700; }
+
+  .pay-details {
+    background:rgba(255,255,255,0.04);
+    border-radius:12px; padding:14px;
+    margin-bottom:16px;
+  }
+  .pay-detail-row { display:flex; justify-content:space-between; font-size:13px; padding:4px 0; }
+  .copy-btn {
+    background:rgba(0,194,255,0.1); border:1px solid rgba(0,194,255,0.2);
+    border-radius:6px; padding:2px 8px; font-size:11px;
+    color:var(--accent); cursor:pointer; font-family:'Tajawal',sans-serif;
+    border:none; transition:all 0.2s;
+  }
+  .copy-btn:hover { background:rgba(0,194,255,0.2); }
+
+  /* ===== READER DASHBOARD ===== */
+  .reader-search {
+    display:flex; gap:10px; margin-bottom:16px;
+  }
+  .reader-input {
+    flex:1; padding:12px 16px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid var(--border);
+    border-radius:10px;
+    color:#fff; font-size:15px;
+    font-family:'Tajawal',sans-serif;
+    outline:none;
+  }
+  .reader-input:focus { border-color:var(--accent); }
+
+  .reading-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px;
+    margin-bottom:14px;
+  }
+
+  /* ===== TABS ===== */
+  .tabs { display:flex; gap:8px; margin-bottom:16px; overflow-x:auto; }
+  .tab {
+    padding:8px 16px; border-radius:20px; font-size:13px; font-weight:600;
+    border:1px solid var(--border); background:transparent;
+    color:var(--muted); cursor:pointer; white-space:nowrap;
+    font-family:'Tajawal',sans-serif; transition:all 0.2s;
+  }
+  .tab.active { background:var(--accent); border-color:var(--accent); color:#000; }
+
+  /* ===== NOTIFICATION ===== */
+  .toast {
+    position:fixed; bottom:30px; left:50%; transform:translateX(-50%);
+    background:var(--card); border:1px solid var(--accent);
+    border-radius:12px; padding:12px 24px;
+    font-size:14px; font-weight:600;
+    z-index:9999; display:none;
+    white-space:nowrap;
+    box-shadow:0 8px 30px rgba(0,194,255,0.3);
+    animation:slideUp 0.3s ease;
+  }
+  .toast.show { display:block; }
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:400px) {
+    .login-cards { grid-template-columns:1fr; }
+    .payment-cards { grid-template-columns:1fr; }
+    .stats-grid { grid-template-columns:1fr; }
+    .douar-grid { grid-template-columns:1fr; }
+    .payment-methods { grid-template-columns:1fr; }
+  }
+
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:rgba(0,194,255,0.3); border-radius:4px; }
+
+  /* Filter row */
+  .filter-row { display:flex; gap:8px; margin-bottom:14px; overflow-x:auto; }
+  .filter-btn {
+    padding:6px 14px; border-radius:20px; border:1px solid var(--border);
+    background:transparent; color:var(--muted); font-size:12px; font-weight:600;
+    cursor:pointer; white-space:nowrap; font-family:'Tajawal',sans-serif;
+    transition:all 0.2s;
+  }
+  .filter-btn.active { background:var(--accent); border-color:var(--accent); color:#000; }
+
+  .alert-banner {
+    background:rgba(240,180,41,0.1);
+    border:1px solid rgba(240,180,41,0.3);
+    border-radius:12px; padding:12px 16px;
+    font-size:13px; color:var(--gold);
+    display:flex; align-items:center; gap:8px;
+    margin-bottom:16px;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-canvas"></div>
+<div class="bg-grid"></div>
+
+<!-- ===== LANDING ===== -->
+<div id="landing" class="page active">
+  <div class="hero">
+    <div class="org-logo">🏛️</div>
+    <h1 class="org-title">جمعية شباب ادوارحمان<br>للتنمية والتعاون</h1>
+    <p class="org-subtitle">جماعة سيدي عبد الله ابلعيد – سيدي إيفي</p>
+    <span class="org-badge">🗓️ تأسست سنة 2020</span>
+  </div>
+
+  <div class="info-strip">
+    <div class="info-item"><span>📞</span> 00 00 00 00 06</div>
+    <div class="info-item"><span>📧</span> Contact@asjid.ma</div>
+    <div class="info-item"><span>🏘️</span> 5 دواوير</div>
+    <div class="info-item"><span>👥</span> 110 مشترك</div>
+  </div>
+
+  <div class="login-section">
+    <p class="login-title">— اختر نوع الدخول —</p>
+
+    <div class="login-cards">
+      <div class="login-card admin" onclick="openLogin('admin')">
+        <span class="card-icon">👑</span>
+        <div class="card-label">الإدارة</div>
+        <div class="card-desc">لوحة التحكم الكاملة</div>
+      </div>
+      <div class="login-card reader" onclick="openLogin('reader')">
+        <span class="card-icon">📊</span>
+        <div class="card-label">قاري العداد</div>
+        <div class="card-desc">إدخال القراءات</div>
+      </div>
+      <div class="login-card collector" onclick="openLogin('collector')">
+        <span class="card-icon">💰</span>
+        <div class="card-label">المحصل</div>
+        <div class="card-desc">تتبع المدفوعات</div>
+      </div>
+      <div class="login-card member" onclick="openLogin('member')">
+        <span class="card-icon">🏠</span>
+        <div class="card-label">دخول المشترك</div>
+        <div class="card-desc">ادخل رقم حسابك ورمزك السري لعرض فاتورتك</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Section -->
+  <div class="payment-section">
+    <div class="payment-title">💳 طرق الدفع المتاحة</div>
+    <div class="payment-cards">
+      <div class="pay-card orange">
+        <div class="pay-icon">🟠</div>
+        <div class="pay-name" style="color:var(--accent3)">Orange Money</div>
+        <div class="pay-num">06 00 00 00 00</div>
+        <div class="pay-note">أرسل الفاتورة + رقم الحساب في الرسالة</div>
+      </div>
+      <div class="pay-card bank">
+        <div class="pay-icon">🏦</div>
+        <div class="pay-name" style="color:var(--accent2)">الحساب البنكي</div>
+        <div class="pay-num">MA000 0000 0000 0000 0000 00</div>
+        <div class="pay-note">بنك الشعبي – جمعية ادوارحمان</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN DASHBOARD ===== -->
+<div id="admin-dash" class="page">
+  <div class="dash-header">
+    <div class="dash-logo">
+      <div class="dash-logo-icon">👑</div>
+      <div>
+        <div class="dash-logo-text">لوحة الإدارة</div>
+        <div class="dash-logo-sub">جمعية ادوارحمان</div>
+      </div>
+    </div>
+    <div class="dash-actions">
+      <button class="btn-sm btn-outline" onclick="logout()">خروج ↩</button>
+    </div>
+  </div>
+
+  <div class="dash-content">
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card blue">
+        <div class="stat-icon">📊</div>
+        <div class="stat-value">57%</div>
+        <div class="stat-label">معدل التحصيل</div>
+        <div class="stat-sub">2.160 من 3.790 درهم</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">👥</div>
+        <div class="stat-value">110</div>
+        <div class="stat-label">المشتركون</div>
+        <div class="stat-sub">5 دواوير</div>
+      </div>
+      <div class="stat-card wide gold">
+        <div class="stat-icon">💰</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div class="stat-value">2.160 <span style="font-size:16px;color:var(--muted)">درهم</span></div>
+            <div class="stat-label">إجمالي المداخيل المحصلة</div>
+          </div>
+          <div style="text-align:left">
+            <div style="font-size:20px;font-weight:900;color:#fc8181">1.950 <span style="font-size:12px">درهم</span></div>
+            <div style="font-size:12px;color:var(--muted)">متبقي</div>
+          </div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" style="width:57%"></div></div>
+          <div class="progress-labels"><span>✅ مدفوع: 45</span><span>❌ غير مؤدٍ: 65</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alerts -->
+    <div class="alert-banner">⚠️ 2 تنبيهات نشطة – مشتركون تجاوزوا حد الاستهلاك (15 م³)</div>
+
+    <!-- Douar Performance -->
+    <div class="section-header">
+      <div class="section-title">🏘️ الأداء حسب الدوار</div>
+    </div>
+
+    <div class="douar-grid">
+      <div class="douar-card">
+        <div class="douar-header">
+          <div class="douar-dot" style="background:#00c2ff"></div>
+          <div class="douar-name">دوار بوتزنيرت</div>
+        </div>
+        <div class="douar-stats">16 مشترك • 632/732 د</div>
+        <div class="douar-pct" style="color:#00c2ff">116%</div>
+        <div class="progress-bar" style="margin-top:6px"><div class="progress-fill" style="width:100%;background:linear-gradient(90deg,#00c2ff,#00e5a0)"></div></div>
+      </div>
+      <div class="douar-card">
+        <div class="douar-header">
+          <div class="douar-dot" style="background:#a855f7"></div>
+          <div class="douar-name">دوار تيكيضا</div>
+        </div>
+        <div class="douar-stats">26 مشترك • 583/950 د</div>
+        <div class="douar-pct" style="color:#a855f7">61%</div>
+        <div class="progress-bar" style="margin-top:6px"><div class="progress-fill" style="width:61%;background:linear-gradient(90deg,#a855f7,#7c3aed)"></div></div>
+      </div>
+      <div class="douar-card">
+        <div class="douar-header">
+          <div class="douar-dot" style="background:#f0b429"></div>
+          <div class="douar-name">دوار إد علوكان</div>
+        </div>
+        <div class="douar-stats">18 مشترك • 265/520 د</div>
+        <div class="douar-pct" style="color:#f0b429">51%</div>
+        <div class="progress-bar" style="margin-top:6px"><div class="progress-fill" style="width:51%;background:linear-gradient(90deg,#f0b429,#d4891a)"></div></div>
+      </div>
+      <div class="douar-card">
+        <div class="douar-header">
+          <div class="douar-dot" style="background:#00e5a0"></div>
+          <div class="douar-name">إيكر إيمازيغن</div>
+        </div>
+        <div class="douar-stats">37 مشترك • 530/1163 د</div>
+        <div class="douar-pct" style="color:#00e5a0">46%</div>
+        <div class="progress-bar" style="margin-top:6px"><div class="progress-fill" style="width:46%;background:linear-gradient(90deg,#00e5a0,#00a070)"></div></div>
+      </div>
+    </div>
+
+    <!-- Members List -->
+    <div class="section-header">
+      <div class="section-title">👤 المشتركون</div>
+      <button class="btn-sm btn-outline" onclick="toggleFilter()">تصفية</button>
+    </div>
+
+    <div class="filter-row" id="filterRow">
+      <button class="filter-btn active" onclick="filterMembers('all',this)">الكل (110)</button>
+      <button class="filter-btn" onclick="filterMembers('paid',this)">مدفوع (45)</button>
+      <button class="filter-btn" onclick="filterMembers('unpaid',this)">غير مؤدٍ (65)</button>
+      <button class="filter-btn" onclick="filterMembers('boutzniret',this)">بوتزنيرت</button>
+      <button class="filter-btn" onclick="filterMembers('tikidha',this)">تيكيضا</button>
+      <button class="filter-btn" onclick="filterMembers('idaloukan',this)">إد علوكان</button>
+      <button class="filter-btn" onclick="filterMembers('amazighn',this)">إيمازيغن</button>
+      <button class="filter-btn" onclick="filterMembers('tighza',this)">تيغزا</button>
+    </div>
+
+    <div class="member-list" id="adminMemberList">
+      <!-- Generated by JS -->
+    </div>
+  </div>
+</div>
+
+<!-- ===== COLLECTOR DASHBOARD ===== -->
+<div id="collector-dash" class="page">
+  <div class="dash-header">
+    <div class="dash-logo">
+      <div class="dash-logo-icon">💰</div>
+      <div>
+        <div class="dash-logo-text">لوحة المحصل</div>
+        <div class="dash-logo-sub">جمعية ادوارحمان</div>
+      </div>
+    </div>
+    <div class="dash-actions">
+      <button class="btn-sm btn-outline" onclick="logout()">خروج ↩</button>
+    </div>
+  </div>
+
+  <div class="dash-content">
+    <div class="stats-grid">
+      <div class="stat-card green">
+        <div class="stat-icon">✅</div>
+        <div class="stat-value">45</div>
+        <div class="stat-label">مدفوع</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-icon">❌</div>
+        <div class="stat-value">65</div>
+        <div class="stat-label">غير مؤدٍ</div>
+      </div>
+      <div class="stat-card wide gold">
+        <div class="stat-icon">💰</div>
+        <div class="stat-value">2.160 <span style="font-size:16px;color:var(--muted)">درهم</span></div>
+        <div class="stat-label">إجمالي المحصل</div>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" style="width:57%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <div class="section-title">❌ غير المؤدين</div>
+    </div>
+
+    <div class="member-list" id="collectorUnpaid"></div>
+  </div>
+</div>
+
+<!-- ===== READER DASHBOARD ===== -->
+<div id="reader-dash" class="page">
+  <div class="dash-header">
+    <div class="dash-logo">
+      <div class="dash-logo-icon">📊</div>
+      <div>
+        <div class="dash-logo-text">قاري العداد</div>
+        <div class="dash-logo-sub">جمعية ادوارحمان</div>
+      </div>
+    </div>
+    <div class="dash-actions">
+      <button class="btn-sm btn-outline" onclick="logout()">خروج ↩</button>
+    </div>
+  </div>
+
+  <div class="dash-content">
+    <div class="alert-banner">📅 فترة الفوترة: مارس – أبريل 2026</div>
+
+    <div class="section-header">
+      <div class="section-title">🔍 البحث عن مشترك</div>
+    </div>
+
+    <div class="reader-search">
+      <input type="text" class="reader-input" id="readerSearch" placeholder="ابحث باسم أو رقم الحساب..." oninput="searchReader()">
+    </div>
+
+    <div class="member-list" id="readerMemberList"></div>
+  </div>
+</div>
+
+<!-- ===== MEMBER DASHBOARD ===== -->
+<div id="member-dash" class="page">
+  <div class="dash-header">
+    <div class="dash-logo">
+      <div class="dash-logo-icon">🏠</div>
+      <div>
+        <div class="dash-logo-text">حسابي</div>
+        <div class="dash-logo-sub">جمعية ادوارحمان</div>
+      </div>
+    </div>
+    <div class="dash-actions">
+      <button class="btn-sm btn-outline" onclick="logout()">خروج ↩</button>
+    </div>
+  </div>
+
+  <div class="dash-content">
+    <div class="profile-card" id="memberProfile">
+      <!-- filled by JS -->
+    </div>
+
+    <div class="bill-card" id="memberBill">
+      <!-- filled by JS -->
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+      <button class="btn-login btn-primary" onclick="openPayment()">💳 الدفع الآن</button>
+      <button class="btn-login btn-outline" style="border-radius:12px;padding:14px;font-size:15px;font-weight:700;font-family:'Tajawal',sans-serif;cursor:pointer;transition:all 0.3s;border:1px solid var(--border);background:transparent;color:var(--muted)" onclick="showMemberHistory()">📋 السجل</button>
+    </div>
+
+    <!-- History section (hidden initially) -->
+    <div id="memberHistory" style="display:none">
+      <div class="section-header">
+        <div class="section-title">📋 سجل الدفعات</div>
+      </div>
+      <div class="bill-card">
+        <div class="bill-row">
+          <span class="bill-key">مارس 2026</span>
+          <span class="bill-val status-badge status-paid">✅ مدفوع</span>
+        </div>
+        <div class="bill-row">
+          <span class="bill-key">فبراير 2026</span>
+          <span class="bill-val status-badge status-paid">✅ مدفوع</span>
+        </div>
+        <div class="bill-row">
+          <span class="bill-key">يناير 2026</span>
+          <span class="bill-val status-badge status-unpaid">❌ غير مدفوع</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LOGIN MODAL ===== -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeLogin()">✕</button>
+    <div class="modal-icon" id="modalIcon">🔐</div>
+    <div class="modal-title" id="modalTitle">تسجيل الدخول</div>
+    <div class="modal-sub" id="modalSub">أدخل رمزك السري</div>
+
+    <div id="memberIdField" style="display:none" class="form-group">
+      <label class="form-label">رقم الحساب</label>
+      <input type="number" class="form-input" id="memberIdInput" placeholder="مثال: 101" style="letter-spacing:2px">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">الرمز السري</label>
+      <input type="password" class="form-input" id="codeInput" placeholder="••••" maxlength="6">
+    </div>
+
+    <button class="btn-login btn-primary" id="loginBtn" onclick="doLogin()">دخول ←</button>
+    <div class="error-msg" id="errorMsg">❌ الرمز غير صحيح، حاول مجدداً</div>
+
+    <!-- Payment option for members -->
+    <div id="guestPayBtn" style="display:none;margin-top:14px">
+      <div style="text-align:center;font-size:12px;color:var(--muted);margin-bottom:10px">— أو —</div>
+      <button class="btn-login" style="background:rgba(240,180,41,0.1);border:1px solid rgba(240,180,41,0.3);color:var(--gold);border-radius:12px;padding:12px;font-size:14px;font-weight:700;font-family:'Tajawal',sans-serif;cursor:pointer;width:100%" onclick="openPaymentDirect()">💳 الدفع عبر Orange Money أو البنك</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAYMENT MODAL ===== -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closePayment()">✕</button>
+    <div class="modal-icon">💳</div>
+    <div class="modal-title">طرق الدفع</div>
+    <div class="modal-sub" id="paymentAmount">المبلغ المستحق</div>
+
+    <div class="payment-methods">
+      <div class="pay-method" onclick="selectPayMethod('orange',this)">
+        <div class="pay-method-icon">🟠</div>
+        <div class="pay-method-name" style="color:var(--accent3)">Orange Money</div>
+      </div>
+      <div class="pay-method" onclick="selectPayMethod('bank',this)">
+        <div class="pay-method-icon">🏦</div>
+        <div class="pay-method-name" style="color:var(--accent2)">الحساب البنكي</div>
+      </div>
+    </div>
+
+    <div class="pay-details" id="payDetails" style="display:none">
+      <div id="payDetailsContent"></div>
+    </div>
+
+    <div class="pay-details" style="background:rgba(240,180,41,0.05);border:1px solid rgba(240,180,41,0.15)">
+      <div class="pay-detail-row">
+        <span style="color:var(--muted);font-size:13px">⚠️ ملاحظة مهمة:</span>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px">أرسل لقطة شاشة للدفع مع رقم حسابك إلى الجمعية على الرقم التالي:</div>
+      <div style="font-size:15px;font-weight:700;color:var(--gold);margin-top:8px;text-align:center">📱 06 00 00 00 00</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== READING MODAL ===== -->
+<div class="modal-overlay" id="readingModal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('readingModal').classList.remove('show')">✕</button>
+    <div class="modal-icon">📊</div>
+    <div class="modal-title" id="readingName">إدخال القراءة</div>
+    <div class="modal-sub" id="readingId">رقم الحساب</div>
+
+    <div class="form-group">
+      <label class="form-label">القراءة السابقة (م³)</label>
+      <input type="number" class="form-input" id="prevReading" readonly style="color:var(--muted)">
+    </div>
+    <div class="form-group">
+      <label class="form-label">القراءة الحالية (م³)</label>
+      <input type="number" class="form-input" id="currReading" placeholder="أدخل القراءة">
+    </div>
+    <div class="bill-card" style="margin:0 0 16px;padding:14px">
+      <div class="bill-row">
+        <span class="bill-key">الاستهلاك</span>
+        <span class="bill-val" id="calcConsumption">-</span>
+      </div>
+      <div class="bill-row">
+        <span class="bill-key">المبلغ المحتسب</span>
+        <span class="bill-val" id="calcAmount">-</span>
+      </div>
+    </div>
+    <button class="btn-login btn-green" onclick="saveReading()">✅ حفظ القراءة</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== DATA =====
+const CODES = {
+  admin: '1234',
+  reader: '5678',
+  collector: '9012'
+};
+
+const MEMBERS = [
+  // Boutzniret (101-116)
+  {id:101, name:'أفلوس الحسين', douar:'بوتزنيرت', amount:124, paid:true, consumption:5.2, prev:120, curr:125.2},
+  {id:102, name:'ازركي أحمد', douar:'بوتزنيرت', amount:55, paid:true, consumption:3.5, prev:80, curr:83.5},
+  {id:103, name:'ازركي محمد', douar:'بوتزنيرت', amount:25, paid:true, consumption:0.5, prev:40, curr:40.5},
+  {id:104, name:'ازركي إبراهيم', douar:'بوتزنيرت', amount:45, paid:true, consumption:2.5, prev:60, curr:62.5},
+  {id:105, name:'لحسن بنحسون', douar:'بوتزنيرت', amount:50, paid:true, consumption:3.0, prev:70, curr:73},
+  {id:106, name:'أزركي ياسين', douar:'بوتزنيرت', amount:45, paid:true, consumption:2.5, prev:55, curr:57.5},
+  {id:107, name:'بوتغاطن محمد', douar:'بوتزنيرت', amount:25, paid:true, consumption:0.5, prev:30, curr:30.5},
+  {id:108, name:'بوتغاطن مبارك', douar:'بوتزنيرت', amount:20, paid:true, consumption:0, prev:20, curr:20},
+  {id:109, name:'بوتغاطن إبراهيم', douar:'بوتزنيرت', amount:20, paid:true, consumption:0, prev:15, curr:15},
+  {id:110, name:'أفلوس رشيد', douar:'بوتزنيرت', amount:30, paid:true, consumption:1, prev:25, curr:26},
+  {id:111, name:'اسفار محمد', douar:'بوتزنيرت', amount:20, paid:true, consumption:0, prev:18, curr:18},
+  {id:112, name:'اسفار إبراهيم', douar:'بوتزنيرت', amount:20, paid:true, consumption:0, prev:22, curr:22},
+  {id:113, name:'فتيحة أسفار', douar:'بوتزنيرت', amount:20, paid:true, consumption:0, prev:10, curr:10},
+  {id:114, name:'اسفار الحسين بن أحمد', douar:'بوتزنيرت', amount:25, paid:true, consumption:0.5, prev:30, curr:30.5},
+  {id:115, name:'بوتغاطن الحسين أمبارك', douar:'بوتزنيرت', amount:20, paid:false, consumption:0, prev:8, curr:8},
+  {id:116, name:'الراوض', douar:'بوتزنيرت', amount:88, paid:true, consumption:6.8, prev:95, curr:101.8},
+  // Tikidha (201-226)
+  {id:201, name:'إدبكا عمر', douar:'تيكيضا', amount:50, paid:true, consumption:3.0, prev:60, curr:63},
+  {id:202, name:'إدبكا أحمد بن علي', douar:'تيكيضا', amount:20, paid:false, consumption:0, prev:15, curr:15},
+  {id:203, name:'أوتكضا احمد', douar:'تيكيضا', amount:118, paid:true, consumption:9.8, prev:80, curr:89.8},
+  {id:204, name:'إدبكا إدريس', douar:'تيكيضا', amount:20, paid:true, consumption:0, prev:12, curr:12},
+  {id:205, name:'إدبكا العربي', douar:'تيكيضا', amount:20, paid:true, consumption:0, prev:18, curr:18},
+  {id:206, name:'أوكيدان بوبكر', douar:'تيكيضا', amount:20, paid:false, consumption:0, prev:25, curr:25},
+  {id:207, name:'إدبكا الحسن', douar:'تيكيضا', amount:70, paid:true, consumption:5.0, prev:55, curr:60},
+  {id:208, name:'كيداوي إبراهيم', douar:'تيكيضا', amount:100, paid:true, consumption:8.0, prev:90, curr:98},
+  {id:209, name:'كيداوي الحسن', douar:'تيكيضا', amount:40, paid:false, consumption:2.0, prev:45, curr:47},
+  {id:210, name:'أوكيدان علي', douar:'تيكيضا', amount:45, paid:true, consumption:2.5, prev:50, curr:52.5},
+  {id:211, name:'أوكيدان الحسن', douar:'تيكيضا', amount:20, paid:true, consumption:0, prev:20, curr:20},
+  {id:212, name:'أوكيدان أحمد', douar:'تيكيضا', amount:30, paid:true, consumption:1.0, prev:30, curr:31},
+  {id:213, name:'إدبكا علي', douar:'تيكيضا', amount:45, paid:true, consumption:2.5, prev:40, curr:42.5},
+  {id:214, name:'إدبكا جامع بن مبارك', douar:'تيكيضا', amount:82, paid:false, consumption:6.2, prev:70, curr:76.2},
+  {id:215, name:'إدبكا سالم', douar:'تيكيضا', amount:20, paid:false, consumption:0, prev:15, curr:15},
+  {id:216, name:'أوكيدان عمر', douar:'تيكيضا', amount:20, paid:false, consumption:0, prev:22, curr:22},
+  {id:217, name:'إدبكا عبد الله', douar:'تيكيضا', amount:20, paid:false, consumption:0, prev:18, curr:18},
+  {id:218, name:'أولكيضا محمد', douar:'تيكيضا', amount:25, paid:false, consumption:0.5, prev:28, curr:28.5},
+  {id:219, name:'المسجد', douar:'تيكيضا', amount:0, paid:false, consumption:0, prev:0, curr:0},
+  {id:220, name:'إدبكا جامع بن علي', douar:'تيكيضا', amount:30, paid:false, consumption:1.0, prev:35, curr:36},
+  {id:221, name:'عائشة زبوب', douar:'تيكيضا', amount:30, paid:false, consumption:1.0, prev:32, curr:33},
+  {id:222, name:'أوكيدان إبراهيم', douar:'تيكيضا', amount:45, paid:false, consumption:2.5, prev:40, curr:42.5},
+  {id:223, name:'الحسين إدبكا', douar:'تيكيضا', amount:25, paid:false, consumption:0.5, prev:20, curr:20.5},
+  {id:224, name:'علي بن سي على', douar:'تيكيضا', amount:20, paid:false, consumption:0, prev:15, curr:15},
+  {id:225, name:'إدبكا إبراهيم', douar:'تيكيضا', amount:35, paid:false, consumption:1.5, prev:38, curr:39.5},
+  {id:226, name:'بنضمين محمد', douar:'تيكيضا', amount:0, paid:false, consumption:0, prev:0, curr:0},
+  // Id Aloukan (301-319)
+  {id:301, name:'باجدي مصطفى', douar:'إد علوكان', amount:35, paid:false, consumption:1.5, prev:40, curr:41.5},
+  {id:302, name:'المدرسة', douar:'إد علوكان', amount:0, paid:false, consumption:0, prev:0, curr:0},
+  {id:303, name:'بوتكمي علي', douar:'إد علوكان', amount:60, paid:false, consumption:4.0, prev:55, curr:59},
+  {id:304, name:'بن احمد احمد', douar:'إد علوكان', amount:30, paid:true, consumption:1.0, prev:35, curr:36},
+  {id:305, name:'بن احمد عمر', douar:'إد علوكان', amount:25, paid:false, consumption:0.5, prev:28, curr:28.5},
+  {id:306, name:'فاطمة غربي', douar:'إد علوكان', amount:50, paid:false, consumption:3.0, prev:50, curr:53},
+  {id:307, name:'بومكور محمد', douar:'إد علوكان', amount:20, paid:true, consumption:0, prev:18, curr:18},
+  {id:308, name:'كوريح عمر', douar:'إد علوكان', amount:50, paid:false, consumption:3.0, prev:45, curr:48},
+  {id:309, name:'كوريح بوزايد', douar:'إد علوكان', amount:40, paid:true, consumption:2.0, prev:42, curr:44},
+  {id:310, name:'كوريح الحسن', douar:'إد علوكان', amount:20, paid:true, consumption:0, prev:22, curr:22},
+  {id:311, name:'بومكور عبد الله', douar:'إد علوكان', amount:20, paid:true, consumption:0, prev:20, curr:20},
+  {id:312, name:'المسجد', douar:'إد علوكان', amount:0, paid:false, consumption:0, prev:0, curr:0},
+  {id:314, name:'محمد أوبوهوش', douar:'إد علوكان', amount:30, paid:true, consumption:1.0, prev:30, curr:31},
+  {id:315, name:'حومان محمد', douar:'إد علوكان', amount:20, paid:true, consumption:0, prev:18, curr:18},
+  {id:316, name:'بومكور محمد', douar:'إد علوكان', amount:20, paid:false, consumption:0, prev:22, curr:22},
+  {id:317, name:'بومكور احمد', douar:'إد علوكان', amount:50, paid:false, consumption:3.0, prev:48, curr:51},
+  {id:318, name:'بومكور كمال', douar:'إد علوكان', amount:30, paid:false, consumption:1.0, prev:35, curr:36},
+  {id:319, name:'كوريح بها', douar:'إد علوكان', amount:20, paid:false, consumption:0, prev:20, curr:20},
+  // Amazighn (401-438)
+  {id:401, name:'حسن أهيضور', douar:'إيكر إيمازيغن', amount:45, paid:false, consumption:2.5, prev:50, curr:52.5},
+  {id:402, name:'محمد أهيضور', douar:'إيكر إيمازيغن', amount:25, paid:true, consumption:0.5, prev:28, curr:28.5},
+  {id:403, name:'بلحاج حمد', douar:'إيكر إيمازيغن', amount:40, paid:true, consumption:2.0, prev:42, curr:44},
+  {id:404, name:'أنجار إبراهيم', douar:'إيكر إيمازيغن', amount:20, paid:false, consumption:0, prev:18, curr:18},
+  {id:405, name:'أشبار محمد بن لحسن', douar:'إيكر إيمازيغن', amount:30, paid:false, consumption:1.0, prev:32, curr:33},
+  {id:406, name:'أشبار لحسن', douar:'إيكر إيمازيغن', amount:20, paid:false, consumption:0, prev:20, curr:20},
+  {id:407, name:'بن مبارك الحسن', douar:'إيكر إيمازيغن', amount:60, paid:false, consumption:4.0, prev:55, curr:59},
+  {id:408, name:'بن مبارك مبارك', douar:'إيكر إيمازيغن', amount:25, paid:false, consumption:0.5, prev:28, curr:28.5},
+  {id:409, name:'أشبار سالم', douar:'إيكر إيمازيغن', amount:20, paid:false, consumption:0, prev:18, curr:18},
+  {id:410, name:'غربي عبد الله', douar:'إيكر إيمازيغن', amount:70, paid:true, consumption:5.0, prev:65, curr:70},
+  {id:411, name:'بن بلقاسم عبد الله', douar:'إيكر إيمازيغن', amount:20, paid:true, consumption:0, prev:22, curr:22},
+  {id:412, name:'بن بلقاسم الحسن', douar:'إيكر إيمازيغن', amount:60, paid:false, consumption:4.0, prev:58, curr:62},
+  {id:413, name:'أبهوش محمد أنضام', douar:'إيكر إيمازيغن', amount:20, paid:false, consumption:0, prev:20, curr:20},
+  {id:414, name:'أشبار إبراهيم', douar:'إيكر إيمازيغن', amount:25, paid:false, consumption:0.5, prev:25, curr:25.5},
+  {id:415, name:'أشبار محمد', douar:'إيكر إيمازيغن', amount:60, paid:true, consumption:4.0, prev:58, curr:62},
+  {id:416, name:'أشبار الحسين', douar:'إيكر إيمازيغن', amount:30, paid:true, consumption:1.0, prev:32, curr:33},
+  {id:417, name:'أبهوش مبارك', douar:'إيكر إيمازيغن', amount:40, paid:true, consumption:2.0, prev:42, curr:44},
+  {id:418, name:'بومكور إبراهيم', douar:'إيكر إيمازيغن', amount:88, paid:false, consumption:6.8, prev:80, curr:86.8},
+  {id:419, name:'بن مبارك عبلا', douar:'إيكر إيمازيغن', amount:30, paid:false, consumption:1.0, prev:32, curr:33},
+  {id:420, name:'بن مبارك الحسين', douar:'إيكر إيمازيغن', amount:25, paid:false, consumption:0.5, prev:28, curr:28.5},
+  {id:421, name:'غربي إبراهيم أوعلي', douar:'إيكر إيمازيغن', amount:20, paid:false, consumption:0, prev:20, curr:20},
+  {id:422, name:'إدمنكا حسن', douar:'إيكر إيمازيغن', amount:40, paid:false, consumption:2.0, prev:42, curr:44},
+  {id:424, name:'إدمنكا علي', douar:'إيكر إيمازيغن', amount:20, paid:false, consumption:0, prev:22, curr:22},
+  {id:425, name:'أنجار الحسن', douar:'إيكر إيمازيغن', amount:25, paid:false, consumption:0.5, prev:25, curr:25.5},
+  {id:426, name:'أنجار أحمد بن الحسن', douar:'إيكر إيمازيغن', amount:30, paid:false, consumption:1.0, prev:30, curr:31},
+  {id:427, name:'إدبوبكر محمد', douar:'إيكر إيمازيغن', amount:20, paid:false, consumption:0, prev:20, curr:20},
+  {id:428, name:'فاطمة بوزمور', douar:'إيكر إيمازيغن', amount:45, paid:true, consumption:2.5, prev:45, curr:47.5},
+  {id:429, name:'باها محمد', douar:'إيكر إيمازيغن', amount:20, paid:true, consumption:0, prev:20, curr:20},
+  {id:431, name:'إدمنكا بوبكر', douar:'إيكر إيمازيغن', amount:25, paid:true, consumption:0.5, prev:28, curr:28.5},
+  {id:432, name:'إدمنكا بلقاسم', douar:'إيكر إيمازيغن', amount:30, paid:false, consumption:1.0, prev:32, curr:33},
+  {id:433, name:'عائشة اليقين', douar:'إيكر إيمازيغن', amount:25, paid:true, consumption:0.5, prev:28, curr:28.5},
+  {id:434, name:'إدمنكا محمد', douar:'إيكر إيمازيغن', amount:20, paid:false, consumption:0, prev:22, curr:22},
+  {id:435, name:'بن علي مبارك', douar:'إيكر إيمازيغن', amount:25, paid:false, consumption:0.5, prev:25, curr:25.5},
+  {id:436, name:'أنجار سالم', douar:'إيكر إيمازيغن', amount:45, paid:true, consumption:2.5, prev:45, curr:47.5},
+  {id:437, name:'المسجد', douar:'إيكر إيمازيغن', amount:0, paid:false, consumption:0, prev:0, curr:0},
+  {id:438, name:'بوزايد أنجار', douar:'إيكر إيمازيغن', amount:0, paid:false, consumption:0, prev:0, curr:0},
+  // Tighza (501-512)
+  {id:501, name:'أنجار موسى', douar:'تيغزا', amount:55, paid:false, consumption:3.5, prev:52, curr:55.5},
+  {id:502, name:'أبهوش الحسن', douar:'تيغزا', amount:40, paid:true, consumption:2.0, prev:42, curr:44},
+  {id:503, name:'أقشوش علي', douar:'تيغزا', amount:70, paid:false, consumption:5.0, prev:65, curr:70},
+  {id:504, name:'أقشوش الحسين أومبارك', douar:'تيغزا', amount:20, paid:false, consumption:0, prev:20, curr:20},
+  {id:505, name:'أقشوش أحمد', douar:'تيغزا', amount:20, paid:false, consumption:0, prev:22, curr:22},
+  {id:506, name:'أقشوش عبد الله', douar:'تيغزا', amount:70, paid:false, consumption:5.0, prev:68, curr:73},
+  {id:507, name:'إسماعيل إعزا', douar:'تيغزا', amount:20, paid:false, consumption:0, prev:20, curr:20},
+  {id:508, name:'بوجمعة عراق', douar:'تيغزا', amount:70, paid:false, consumption:5.0, prev:65, curr:70},
+  {id:509, name:'إبراهيم عراق', douar:'تيغزا', amount:40, paid:false, consumption:2.0, prev:42, curr:44},
+  {id:510, name:'عبلا عراق', douar:'تيغزا', amount:30, paid:false, consumption:1.0, prev:32, curr:33},
+  {id:511, name:'أفلوس ياسين', douar:'تيغزا', amount:20, paid:false, consumption:0, prev:20, curr:20},
+  {id:512, name:'أفلوس عبد الله', douar:'تيغزا', amount:35, paid:false, consumption:1.5, prev:38, curr:39.5},
+];
+
+// Member login codes: id + last 4 digits of amount + "00" (simplified)
+function getMemberCode(member) {
+  return String(member.id).slice(-2) + String(member.amount).padStart(2,'0');
+}
+
+// ===== STATE =====
+let currentLoginType = '';
+let currentMember = null;
+let currentFilter = 'all';
+
+// ===== PAGES =====
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ===== LOGIN MODAL =====
+function openLogin(type) {
+  currentLoginType = type;
+  const modal = document.getElementById('loginModal');
+  const icons = {admin:'👑', reader:'📊', collector:'💰', member:'🏠'};
+  const titles = {admin:'لوحة الإدارة', reader:'قاري العداد', collector:'المحصل', member:'دخول المشترك'};
+  const subs = {admin:'أدخل رمز الإدارة', reader:'أدخل رمز قاري العداد', collector:'أدخل رمز المحصل', member:'أدخل رقم حسابك والرمز السري'};
+  const btns = {admin:'btn-gold', reader:'btn-green', collector:'btn-orange', member:'btn-primary'};
+
+  document.getElementById('modalIcon').textContent = icons[type];
+  document.getElementById('modalTitle').textContent = titles[type];
+  document.getElementById('modalSub').textContent = subs[type];
+  document.getElementById('memberIdField').style.display = type==='member' ? 'block' : 'none';
+  document.getElementById('guestPayBtn').style.display = type==='member' ? 'block' : 'none';
+  document.getElementById('codeInput').value = '';
+  document.getElementById('memberIdInput').value = '';
+  document.getElementById('errorMsg').style.display = 'none';
+
+  const btn = document.getElementById('loginBtn');
+  btn.className = 'btn-login ' + btns[type];
+
+  modal.classList.add('show');
+  setTimeout(()=>document.getElementById('codeInput').focus(),300);
+}
+
+function closeLogin() {
+  document.getElementById('loginModal').classList.remove('show');
+}
+
+function doLogin() {
+  const code = document.getElementById('codeInput').value.trim();
+  const err = document.getElementById('errorMsg');
+
+  if(currentLoginType === 'member') {
+    const memberId = parseInt(document.getElementById('memberIdInput').value);
+    const member = MEMBERS.find(m => m.id === memberId);
+    if(!member) { showError('رقم الحساب غير موجود'); return; }
+    const expected = getMemberCode(member);
+    if(code !== expected) { showError('الرمز السري غير صحيح'); return; }
+    currentMember = member;
+    closeLogin();
+    loadMemberDash(member);
+    showPage('member-dash');
+    return;
+  }
+
+  if(code !== CODES[currentLoginType]) { showError('الرمز غير صحيح، حاول مجدداً'); return; }
+
+  closeLogin();
+  if(currentLoginType === 'admin') { loadAdminDash(); showPage('admin-dash'); }
+  else if(currentLoginType === 'reader') { loadReaderDash(); showPage('reader-dash'); }
+  else if(currentLoginType === 'collector') { loadCollectorDash(); showPage('collector-dash'); }
+}
+
+function showError(msg) {
+  const err = document.getElementById('errorMsg');
+  err.textContent = '❌ ' + msg;
+  err.style.display = 'block';
+  setTimeout(()=>err.style.display='none', 3000);
+}
+
+document.getElementById('codeInput').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+function logout() {
+  currentMember = null;
+  showPage('landing');
+}
+
+// ===== ADMIN DASHBOARD =====
+function loadAdminDash() {
+  renderMemberList('adminMemberList', MEMBERS, 'admin');
+}
+
+function filterMembers(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  let filtered = MEMBERS;
+  if(filter==='paid') filtered = MEMBERS.filter(m=>m.paid);
+  else if(filter==='unpaid') filtered = MEMBERS.filter(m=>!m.paid);
+  else if(filter==='boutzniret') filtered = MEMBERS.filter(m=>m.douar==='بوتزنيرت');
+  else if(filter==='tikidha') filtered = MEMBERS.filter(m=>m.douar==='تيكيضا');
+  else if(filter==='idaloukan') filtered = MEMBERS.filter(m=>m.douar==='إد علوكان');
+  else if(filter==='amazighn') filtered = MEMBERS.filter(m=>m.douar==='إيكر إيمازيغن');
+  else if(filter==='tighza') filtered = MEMBERS.filter(m=>m.douar==='تيغزا');
+  renderMemberList('adminMemberList', filtered, 'admin');
+}
+
+function renderMemberList(containerId, members, mode) {
+  const c = document.getElementById(containerId);
+  if(!members.length) { c.innerHTML='<div style="text-align:center;color:var(--muted);padding:30px">لا يوجد نتائج</div>'; return; }
+  c.innerHTML = members.map(m=>`
+    <div class="member-item">
+      <div class="member-avatar">${m.name[0]}</div>
+      <div class="member-info">
+        <div class="member-name">${m.name}</div>
+        <div class="member-meta">عداد: ${m.id} • ${m.douar} • ${m.amount} د</div>
+      </div>
+      <span class="status-badge ${m.paid?'status-paid':'status-unpaid'}">${m.paid?'✅ مدفوع':'❌ غير مؤدٍ'}</span>
+    </div>
+  `).join('');
+}
+
+// ===== COLLECTOR =====
+function loadCollectorDash() {
+  const unpaid = MEMBERS.filter(m=>!m.paid);
+  renderMemberList('collectorUnpaid', unpaid, 'collector');
+}
+
+// ===== READER =====
+function loadReaderDash() {
+  renderReaderList(MEMBERS);
+}
+
+function searchReader() {
+  const q = document.getElementById('readerSearch').value.toLowerCase();
+  const filtered = MEMBERS.filter(m => m.name.includes(q) || String(m.id).includes(q));
+  renderReaderList(filtered);
+}
+
+function renderReaderList(members) {
+  const c = document.getElementById('readerMemberList');
+  c.innerHTML = members.slice(0,20).map(m=>`
+    <div class="member-item" onclick="openReading(${m.id})">
+      <div class="member-avatar">${m.name[0]}</div>
+      <div class="member-info">
+        <div class="member-name">${m.name}</div>
+        <div class="member-meta">عداد: ${m.id} • ${m.douar} • القراءة السابقة: ${m.prev} م³</div>
+      </div>
+      <span style="color:var(--accent);font-size:18px">›</span>
+    </div>
+  `).join('');
+}
+
+function openReading(id) {
+  const m = MEMBERS.find(x=>x.id===id);
+  if(!m) return;
+  document.getElementById('readingName').textContent = m.name;
+  document.getElementById('readingId').textContent = 'رقم الحساب: ' + m.id + ' • ' + m.douar;
+  document.getElementById('prevReading').value = m.prev;
+  document.getElementById('currReading').value = '';
+  document.getElementById('calcConsumption').textContent = '-';
+  document.getElementById('calcAmount').textContent = '-';
+  document.getElementById('readingModal').classList.add('show');
+
+  document.getElementById('currReading').oninput = function() {
+    const curr = parseFloat(this.value)||0;
+    const cons = Math.max(0, curr - m.prev);
+    let amt = 20; // fixed
+    if(cons<=10) amt += cons*5;
+    else if(cons<=20) amt += 10*5 + (cons-10)*6;
+    else amt += 10*5 + 10*6 + (cons-20)*10;
+    document.getElementById('calcConsumption').textContent = cons.toFixed(1) + ' م³';
+    document.getElementById('calcAmount').textContent = amt.toFixed(0) + ' درهم';
+  };
+}
+
+function saveReading() {
+  showToast('✅ تم حفظ القراءة بنجاح');
+  document.getElementById('readingModal').classList.remove('show');
+}
+
+// ===== MEMBER DASH =====
+function loadMemberDash(m) {
+  const statusColor = m.paid ? 'var(--accent2)' : '#fc8181';
+  const statusText = m.paid ? '✅ مدفوع' : '❌ غير مدفوع';
+
+  document.getElementById('memberProfile').innerHTML = `
+    <div class="profile-avatar">${m.name[0]}</div>
+    <div class="profile-name">${m.name}</div>
+    <div class="profile-id">رقم الحساب: ${m.id}</div>
+    <span class="profile-douar">🏘️ ${m.douar}</span>
+    <div style="margin-top:16px">
+      <span class="status-badge ${m.paid?'status-paid':'status-unpaid'}" style="font-size:14px;padding:8px 20px">${statusText}</span>
+    </div>
+  `;
+
+  document.getElementById('memberBill').innerHTML = `
+    <div style="font-size:14px;font-weight:700;color:var(--muted);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.05)">📋 تفاصيل الفاتورة – مارس/أبريل 2026</div>
+    <div class="bill-row"><span class="bill-key">القراءة السابقة</span><span class="bill-val">${m.prev} م³</span></div>
+    <div class="bill-row"><span class="bill-key">القراءة الحالية</span><span class="bill-val">${m.curr} م³</span></div>
+    <div class="bill-row"><span class="bill-key">الاستهلاك</span><span class="bill-val">${m.consumption.toFixed(1)} م³</span></div>
+    <div class="bill-row"><span class="bill-key">الرسوم الثابتة</span><span class="bill-val">20 درهم</span></div>
+    <div class="bill-row" style="padding-top:12px;border-top:2px solid rgba(255,255,255,0.1)">
+      <span style="font-size:16px;font-weight:800">المبلغ الإجمالي</span>
+      <span style="font-size:22px;font-weight:900;color:${m.paid?'var(--accent2)':'#fc8181'}">${m.amount} <span style="font-size:14px;color:var(--muted)">درهم</span></span>
+    </div>
+  `;
+}
+
+function showMemberHistory() {
+  const h = document.getElementById('memberHistory');
+  h.style.display = h.style.display==='none'?'block':'none';
+}
+
+// ===== PAYMENT =====
+let currentPayMethod = '';
+
+function openPayment() {
+  const amount = currentMember ? currentMember.amount : '---';
+  document.getElementById('paymentAmount').textContent = `المبلغ المستحق: ${amount} درهم`;
+  document.getElementById('payDetails').style.display = 'none';
+  document.querySelectorAll('.pay-method').forEach(p=>p.classList.remove('selected'));
+  currentPayMethod = '';
+  document.getElementById('paymentModal').classList.add('show');
+}
+
+function openPaymentDirect() {
+  closeLogin();
+  document.getElementById('paymentAmount').textContent = 'الدفع العام – جمعية ادوارحمان';
+  document.getElementById('payDetails').style.display = 'none';
+  document.querySelectorAll('.pay-method').forEach(p=>p.classList.remove('selected'));
+  document.getElementById('paymentModal').classList.add('show');
+}
+
+function closePayment() {
+  document.getElementById('paymentModal').classList.remove('show');
+}
+
+function selectPayMethod(method, el) {
+  document.querySelectorAll('.pay-method').forEach(p=>p.classList.remove('selected'));
+  el.classList.add('selected');
+  currentPayMethod = method;
+  const d = document.getElementById('payDetails');
+  const c = document.getElementById('payDetailsContent');
+
+  if(method==='orange') {
+    c.innerHTML = `
+      <div class="pay-detail-row"><span style="color:var(--muted)">الشبكة</span><span style="font-weight:700;color:var(--accent3)">Orange Money 🟠</span></div>
+      <div class="pay-detail-row"><span style="color:var(--muted)">الرقم</span><span style="display:flex;align-items:center;gap:8px"><strong>06 00 00 00 00</strong><button class="copy-btn" onclick="copyText('0600000000')">نسخ</button></span></div>
+      <div class="pay-detail-row"><span style="color:var(--muted)">الاسم</span><span style="font-weight:700">جمعية ادوارحمان</span></div>
+    `;
+  } else {
+    c.innerHTML = `
+      <div class="pay-detail-row"><span style="color:var(--muted)">البنك</span><span style="font-weight:700;color:var(--accent2)">بنك الشعبي 🏦</span></div>
+      <div class="pay-detail-row"><span style="color:var(--muted)">رقم الحساب</span><span style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><strong style="font-size:12px">MA000 0000 0000 0000 0000 00</strong><button class="copy-btn" onclick="copyText('MA000000000000000000000')">نسخ</button></span></div>
+      <div class="pay-detail-row"><span style="color:var(--muted)">الاسم</span><span style="font-weight:700">جمعية ادوارحمان للتنمية</span></div>
+    `;
+  }
+  d.style.display = 'block';
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text).then(()=>showToast('✅ تم النسخ!'));
+}
+
+// ===== TOAST =====
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ===== FILTER TOGGLE =====
+function toggleFilter() {}
+
+// ===== INIT =====
+window.addEventListener('keydown', e=>{
+  if(e.key==='Escape') {
+    document.getElementById('loginModal').classList.remove('show');
+    document.getElementById('paymentModal').classList.remove('show');
+    document.getElementById('readingModal').classList.remove('show');
+  }
+});
+
+// Close modals on overlay click
+['loginModal','paymentModal','readingModal'].forEach(id=>{
+  document.getElementById(id).addEventListener('click', function(e){
+    if(e.target===this) this.classList.remove('show');
+  });
+});
+
+// Print member codes helper (for admin - only shows in console)
+console.log('=== رموز دخول المشتركين ===');
+MEMBERS.forEach(m => {
+  console.log(`ID: ${m.id} | ${m.name} | الرمز: ${getMemberCode(m)}`);
+});
+</script>
+</body>
+</html>
